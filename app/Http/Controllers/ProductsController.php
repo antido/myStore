@@ -8,6 +8,7 @@ use App\Category;
 use App\Products;
 use App\AddToCart;
 use App\ProductDetail;
+use App\UserLog;
 
 class ProductsController extends Controller
 {
@@ -83,6 +84,11 @@ class ProductsController extends Controller
         $product->category_id = $request->input('product_category');
         $product->cover_image = $fileNameToStore;
         $product->save();
+
+        $log = new Userlog;
+        $log->user_id = auth()->user()->id;
+        $log->description = "Added Product";
+        $log->save();
 
         return redirect('/home')->with('success', 'Product Post Created');
     }

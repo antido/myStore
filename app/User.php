@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\PurchaseRecord');
     }
+
+    public function userLogs()
+    {
+        return $this->hasMany('App\UserLog');
+    }
 }
