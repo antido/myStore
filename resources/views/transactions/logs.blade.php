@@ -9,18 +9,22 @@
 					<thead>
 						<tr>
 							<th>Log ID</th>
-							<th>User Name</th>
 							<th>Description</th>
+							<th>Date</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
+						@if(count($logs) > 0)
+							@foreach($logs as $log)
+							<tr>
+								<td>{{$log->id}}</td>
+								<td>{{$log->description}}</td>
+								<td>{{$log->created_at->format('F j, Y')}}</td>
+								<td></td>
+							</tr>
+							@endforeach
+						@endif
 					</tbody>
 				</table>
 			</div>

@@ -9,6 +9,7 @@ use App\User;
 use App\PurchaseRecord;
 use App\AddToCart;
 use App\ProductDetail;
+use App\UserLog;
 
 class TransactionsController extends Controller
 {
@@ -39,7 +40,9 @@ class TransactionsController extends Controller
 
     public function log()
     {
-    	return view('transactions.logs');
+        $logs = UserLog::where('user_id', auth()->user()->id)->get();
+
+    	return view('transactions.logs')->with('logs', $logs);
     }
 
     public function map()
