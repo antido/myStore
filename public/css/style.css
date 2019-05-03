@@ -1,0 +1,64 @@
+/*
+ * myStore Style
+ */
+
+/* Index Page Sections Style */
+.display-section{
+	background-image: url('../img/mystore.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	padding: 10%;
+	border-bottom: 1px solid #000;
+}
+
+.display-section #welcome-section{
+	opacity: 0.9;
+}
+
+.feature-products-section{
+	border: 1px solid #000;
+}
+
+.reviews-section{
+	padding: 5%;
+}
+
+.feature-products-section .product-image-1{
+	background-image: url('../img/devices.jpg');
+}
+
+.feature-products-section .product-image-2{
+	background-image: url('../img/fashion.jpg');
+}
+
+.feature-products-section .product-image-3{
+	background-image: url('../img/automobiles.jpg');
+}
+
+.feature-products-section .product-image-1,
+.feature-products-section .product-image-2,
+.feature-products-section .product-image-3{
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: cover;
+	padding: 15%;
+}
+
+.contact-section{
+	padding: 10px;
+}
+
+.display-section h1,
+.reviews-section h1,
+.contact-section h1{
+	font-family: serif;
+}
+
+.section-text{
+	opacity: 0.8;
+}
+
+/* About Page Style */
+
+
