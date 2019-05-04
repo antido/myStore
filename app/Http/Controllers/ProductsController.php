@@ -109,7 +109,11 @@ class ProductsController extends Controller
         }
 
         $userCart = AddToCart::where($data)->first();
-        $productDet = ProductDetail::where('product_id', $id)->first();
+        if ($userCart) {
+            $productDet = ProductDetail::where(['product_id' => $id, 'cart_id' => $userCart->id])->first();
+        } else {
+            $productDet = ProductDetail::where('product_id', $id)->first();
+        }
 
         return view('products.show')->with(['product' => $product, 'userCart' => $userCart, 'productDet' => $productDet]);
     }
