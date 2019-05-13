@@ -6,8 +6,8 @@
 			<div class="col-md-4">
 				<h2 class="text-center text-success my-3"><i class="fas fa-user-plus"> Add Information</i></h2>
 				<hr class="my-4">
-				<form action="{{ action('ProfileController@store') }}" method="POST" enctype="multipart/form-data">
-					<input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+				<form method="POST" action="{{ action('ProfileController@store') }}">
+					@csrf
 					<div class="form-group">
 						<label>Firstname:</label> 
 						<input type="text" class="form-control" name="first_name" placeholder="Enter Firstname">
@@ -53,9 +53,6 @@
 								<option value="{{$country->id}}">{{$country->name}}</option>
 							@endforeach
 						</select>
-					</div>
-					<div class="form-group">
-						<input type="file" name="user_image">
 					</div>
 					<div class="form-group">
 						<input type="submit" class="form-control btn btn-success" name="Submit" value="Submit">

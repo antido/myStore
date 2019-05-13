@@ -10,15 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 
 /* Pages Route */
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/service', 'PagesController@service');
-Route::get('/product/category/{id}', 'ProductsController@displayProductsByCategory');
-
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 /* Transactions Route */
 Route::get('/transactions/purchases', 'TransactionsController@purchase');
@@ -32,8 +30,13 @@ Route::post('/product/add-to-cart/{id}', 'ProductCartController@storeProductToCa
 Route::delete('/product/remove-from-cart/{id}/{cartId}', 'ProductCartController@removeProductFromCart');
 Route::post('/product/add-quantity/{id}/{cartId}/{qty}', 'ProductCartController@storeProductQuantity');
 
+/* Products Route */
 Route::resource('/product', 'ProductsController');
+Route::get('/product/category/{id}', 'ProductsController@displayProductsByCategory');
+
+/* User Profile Route */
 Route::resource('/profile', 'ProfileController');
+Route::put('/profile/image/{id}', 'ProfileController@addProfileImage');
 
 /* Purchase Product Route */
 Route::post('/purchase/{id}/{amount}', 'PurchaseController@finalizeProductPurchase');

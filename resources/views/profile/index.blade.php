@@ -4,13 +4,31 @@
 	<div class="container py-4">
 		<div class="row justify-content-center">
 			<div class="col-md-2"> 
-				<img 
-					@if($user->userInfo)
-						src="storage/profile_images/{{$user->userInfo->user_image}}" 
+				@if($user->userInfo)
+					<img src="storage/profile_images/{{$user->userInfo->user_image}}" class="img-fluid border border-dark" id="profile-image" alt="Profile image">
+					@if($user->userInfo->user_image == null or $user->userInfo->user_image == 'noimage.jpg')
+						<center><button type="button" class="btn btn-sm btn-success mt-2 profile-img">Add Photo</button></center>
 					@else
-						src="storage/profile_images/noimage.jpg" 
+						<center><button type="button" class="btn btn-sm btn-primary mt-2 profile-img">Update Photo</button></center>
 					@endif
-				class="img-fluid border border-dark" id="profile-image" alt="Profile image">
+				@else
+					<img src="img/noimage.jpg" class="img-fluid border border-dark" id="profile-image" alt="Profile image">
+				@endif
+				<div class="image-section" style="display: none;">
+					@if($user->userInfo)
+						<form method="POST" action="{{ action('ProfileController@addProfileImage', $user->userInfo->id) }}" enctype="multipart/form-data">
+							@csrf
+							<div class="form-group">
+								<input type="file" class="mt-2" id="addUserImg" name="user_image">
+							</div>
+							<div class="form-group">
+								@method('PUT')
+								<input type="submit" class="btn btn-sm btn-success" name="save_image" value="Save">
+								<input type="button" class="btn btn-sm btn-danger" id="cancelImgBtn" name="cancel_image" value="Cancel">
+							</div>
+						</form>
+					@endif
+				</div>
 			</div>
 			<div class="col-md-6">
 				<ul class="list-group list-group-flush">
@@ -44,7 +62,7 @@
 					<li class="list-group-item">
 						<label><strong>Birth Date: </strong> 
 							@if($user->userInfo)
-								{{$user->userInfo->birth_date}}
+								{{date('F j, Y', strtotime($user->userInfo->birth_date))}}
 							@else
 								N/A
 							@endif
@@ -94,12 +112,15 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#profile-image').on('mouseenter', function(){
-				$(this).css('opacity', 0.8);
+			$('.profile-img').on('click', function(){
+				$(this).css('display', 'none');
+				$('.image-section').css('display', 'block');
 			});
 
-			$('#profile-image').on('mouseleave', function(){
-				$(this).css('opacity', 1);
+			$('#cancelImgBtn').on('click', function(){
+				$('#addUserImg').val('');
+				$('.profile-img').css('display', 'block');
+				$('.image-section').css('display', 'none');
 			});
 		});
 	</script>

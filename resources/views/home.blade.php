@@ -31,7 +31,11 @@
                                     <tr>
                                         <td>{{$product->id}}</td>
                                         <td>
-                                            <img src="/storage/cover_images/{{$product->cover_image}}" style="width: 100%;" alt="Product image" class="img-thumbnail">
+                                            @if($product->cover_image == 'noimage.jpg')
+                                                <img src="/img/noimage.jpg" style="width: 100%;" alt="Product image" class="img-thumbnail">
+                                            @else
+                                                <img src="/storage/cover_images/{{$product->cover_image}}" style="width: 100%;" alt="Product image" class="img-thumbnail">
+                                            @endif
                                         </td>
                                         <td>{{$product->name}}</td>
                                         <td>{{$product->created_at->format('F j, Y')}}</td>

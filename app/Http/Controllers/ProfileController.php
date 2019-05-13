@@ -63,18 +63,8 @@ class ProfileController extends Controller
                             'birth_date' => 'required',
                             'phone_number' => 'required',
                             'home_address' => 'required',
-                            'user_image' => 'image|nullable|max:1999',
+                            'country' => 'required',
                         ));
-
-        if ($request->hasFile('user_image')) {
-            $fileNameExtension = $request->file('user_image')->getClientOriginalName();
-            $fileName = pathInfo($fileNameExtension, PATHINFO_FILENAME);
-            $extension = $request->file('user_image')->getClientOriginalExtension();
-            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
-            $path = $request->file('user_image')->storeAs('public/profile_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'noimage.jpg';
-        }
 
         $userInfo = new UserInfo;
         $userInfo->first_name = $request->input('first_name');
@@ -86,7 +76,6 @@ class ProfileController extends Controller
         $userInfo->phone_number = $request->input('phone_number');
         $userInfo->home_address = $request->input('home_address');
         $userInfo->country_id = $request->input('country');
-        $userInfo->user_image = $fileNameToStore;
         $userInfo->save();
 
         $user_id = auth()->user()->id;
@@ -131,14 +120,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->hasFile('user_image')) {
-            $fileNameExtension = $request->file('user_image')->getClientOriginalName();
-            $fileName = pathInfo($fileNameExtension, PATHINFO_FILENAME);
-            $extension = $request->file('user_image')->getClientOriginalExtension();
-            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
-            $path = $request->file('user_image')->storeAs('public/profile_images', $fileNameToStore);
-        }
-
         $userInfo = UserInfo::find($id);
         $userInfo->first_name = $request->input('first_name');
         $userInfo->middle_name = $request->input('middle_name');
@@ -149,11 +130,6 @@ class ProfileController extends Controller
         $userInfo->phone_number = $request->input('phone_number');
         $userInfo->home_address = $request->input('home_address');
         $userInfo->country_id = $request->input('country');
-
-        if ($request->hasFile('user_image')) {
-            $userInfo->user_image = $fileNameToStore;
-        }
-
         $userInfo->save();
 
         return redirect('/profile')->with('success', 'Profile Information Updated');
@@ -168,5 +144,35 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Add user profile image.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addProfileImage(Request $request, $id)
+    {
+        if ($request->hasFile('user_image')) {
+            $fileNameWithExtension = $request->file('user_image')->getClientOriginalName();
+            $fileName = pathInfo($fileNameWithExtension, PATHINFO_FILENAME);
+            $extension = $request->file('user_image')->getClientOriginalExtension();
+            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            $path = $request->file('user_image')->storeAs('public/profile_images', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+
+        $userInfo = UserInfo::find($id);
+
+        if ($request->hasFile('user_image')) {
+            $userInfo->user_image = $fileNameToStore;
+        }
+
+        $userInfo->save();
+
+        return redirect('/profile')->with('success', 'Profile Image Updated');
     }
 }

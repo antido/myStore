@@ -6,8 +6,8 @@
 			<div class="col-md-4">
 				<h2 class="text-center text-primary my-3"><i class="fas fa-edit"> Update Information</i></h2>
 				<hr class="my-4">
-				<form method="POST" action="{{ action('ProfileController@update', $user->userInfo->id) }}" enctype="multipart/form-data">
-					<input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+				<form method="POST" action="{{ action('ProfileController@update', $user->userInfo->id) }}">
+					@csrf
 					<div class="form-group">
 						<label>Firstname:</label>
 						<input type="text" class="form-control" name="first_name" value="{{$user->userInfo->first_name}}">
@@ -69,9 +69,6 @@
 									>{{$country->name}}</option>
 							@endforeach
 						</select>
-					</div>
-					<div class="form-group">
-						<input type="file" name="user_image">
 					</div>
 					<div class="form-group">
 						@method('PUT')
