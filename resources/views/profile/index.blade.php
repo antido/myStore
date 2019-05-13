@@ -4,15 +4,17 @@
 	<div class="container py-4">
 		<div class="row justify-content-center">
 			<div class="col-md-2"> 
-				@if($user->userInfo)
+				@if($user->userInfo and $user->userInfo->user_image)
 					<img src="storage/profile_images/{{$user->userInfo->user_image}}" class="img-fluid border border-dark" id="profile-image" alt="Profile image">
+				@else
+					<img src="img/noimage.jpg" class="img-fluid border border-dark" id="profile-image" alt="Profile image">
+				@endif
+				@if($user->userInfo)
 					@if($user->userInfo->user_image == null or $user->userInfo->user_image == 'noimage.jpg')
 						<center><button type="button" class="btn btn-sm btn-success mt-2 profile-img">Add Photo</button></center>
 					@else
 						<center><button type="button" class="btn btn-sm btn-primary mt-2 profile-img">Update Photo</button></center>
 					@endif
-				@else
-					<img src="img/noimage.jpg" class="img-fluid border border-dark" id="profile-image" alt="Profile image">
 				@endif
 				<div class="image-section" style="display: none;">
 					@if($user->userInfo)
