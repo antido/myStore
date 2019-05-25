@@ -9,6 +9,7 @@ use App\Products;
 use App\AddToCart;
 use App\ProductDetail;
 use App\UserLog;
+use App\Status;
 
 class ProductsController extends Controller
 {
@@ -104,8 +105,10 @@ class ProductsController extends Controller
         $product = Products::find($id);
         if (auth()->user()) {
             $data = ['user_id' => auth()->user()->id, 'is_cart' => true, 'is_purchased' => false];
+            $statData = ['user_id' => auth()->user()->id, 'product_id' => $id];
         } else {
             $data = ['is_cart' => true, 'is_purchased' => false];
+            $statData = ['product_id' => $id];
         }
 
         $userCart = AddToCart::where($data)->first();
@@ -115,7 +118,11 @@ class ProductsController extends Controller
             $productDet = ProductDetail::where('product_id', $id)->first();
         }
 
-        return view('products.show')->with(['product' => $product, 'userCart' => $userCart, 'productDet' => $productDet]);
+        $status = Status::where($statData)->first();
+        $countLikes = Status::where(['product_id' => $id, 'like' => true])->count();
+        $countMarks = Status::where(['product_id' => $id, 'bookmark' => true])->count();
+
+        return view('products.show')->with(['product' => $product, 'userCart' => $userCart, 'productDet' => $productDet, 'status' => $status, 'countLikes' => $countLikes, 'countMarks' => $countMarks]);
     }
 
     /**

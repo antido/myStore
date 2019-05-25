@@ -7,7 +7,13 @@
 		  	<hr class="mt-2">
 		  	<div class="row">
 		  		<div class="col-md-8">
-		  			<img style="width:100%;" src="/storage/cover_images/{{$product->cover_image}}" class="card-img-top border border-dark" alt="Vans Shoes">
+		  			<img style="width:100%;" 
+		  				@if(file_exists(public_path("/storage/cover_images/".$product->cover_image)))
+		  					src="/storage/cover_images/{{$product->cover_image}}" 
+		  				@else
+		  					src="/img/noimage.jpg"
+		  				@endif
+		  			class="card-img-top border border-dark" alt="Vans Shoes">
 		  		</div>
 		  		<div class="col-md-4">
 		  			<label class="text-info"><strong>Description:</strong></label>
@@ -29,7 +35,40 @@
 		  			@endif
 		  		</div>
 		  	</div>
-		  	<hr class="my-4">
+		  	<div class="row mt-2 justify-content-center">
+		  		<div class="col-md-6">
+		  			@if($status and !Auth::guest())
+		  				@if($status->like == true)
+					  		<a class="ml-3" onclick="unlikeProduct();" href="javascript:void(0);"><img src="/img/status/like-active.png" title="Liked"></a>
+		  					<span>{{$countLikes ? $countLikes : 0}}</span>
+					  	@else
+					  		<a class="ml-3" onclick="likeProduct();" href="javascript:void(0);"><img src="/img/status/like.png" title="Like"></a>
+					  		<span>{{$countLikes ? $countLikes : 0}}</span>
+				  		@endif
+				  		@if($status->bookmark == true)
+					  		<a class="ml-3" onclick="unbookmarkProduct();" href="javascript:void(0);"><img src="/img/status/bookmark-active.png" title="Bookmarked"></a>
+					  		<span>{{$countMarks ? $countMarks : 0}}</span>
+					  	@else
+					  		<a class="ml-3" onclick="bookmarkProduct();" href="javascript:void(0);"><img src="/img/status/bookmark.png" title="Bookmark"></a>
+					  		<span>{{$countMarks ? $countMarks : 0}}</span>
+				  		@endif
+				  	@else
+				  		<a class="ml-3"
+				  			@if(!Auth::guest()) 
+				  				onclick="likeProduct();"
+				  			@endif
+				  		href="javascript:void(0);"><img src="/img/status/like.png" title="Like"></a>
+				  		<span>{{$countLikes ? $countLikes : 0}}</span>
+				  		<a class="ml-3" 
+				  			@if(!Auth::guest())
+				  				onclick="bookmarkProduct();" 
+				  			@endif
+				  		href="javascript:void(0);"><img src="/img/status/bookmark.png" title="Bookmark"></a>
+				  		<span>{{$countMarks ? $countMarks : 0}}</span>
+				  	@endif
+		  		</div>
+		  	</div>
+		  	<hr class="mt-2 mb-4">
 		  	<span class="text-secondary">Posted {{$product->created_at->format('F j, Y')}}</span><br>
 		  	<label><strong>Seller: </strong></label><br>
 		  	<span class="text-secondary ml-5"><strong>Name: </strong> 
@@ -69,6 +108,70 @@
 					window.location.href = "/product/{{$product->id}}";
 				}
 			});
+		}
+
+		function likeProduct() {
+			$.ajaxSetup({
+	            headers: {
+	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            }
+	        });
+
+	        $.ajax({
+	        	type: "POST",
+	        	url: "/product/status-like/{{$product->id}}",
+	        	success: function(data) {
+	        		window.location.reload();
+	        	}
+	        });
+		}
+
+		function bookmarkProduct() {
+			$.ajaxSetup({
+	            headers: {
+	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            }
+	        });
+
+	        $.ajax({
+	        	type: "POST",
+	        	url: "/product/status-bookmark/{{$product->id}}",
+	        	success: function(data) {
+	        		window.location.reload();
+	        	}
+	        });
+		}
+
+		function unlikeProduct() {
+			$.ajaxSetup({
+	            headers: {
+	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            }
+	        });
+
+	        $.ajax({
+	        	type: "POST",
+	        	url: "/product/status-remove-like/{{$product->id}}",
+	        	success: function(data) {
+	        		window.location.reload();
+	        	}
+	        });
+		}
+
+		function unbookmarkProduct() {
+			$.ajaxSetup({
+	            headers: {
+	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            }
+	        });
+
+	        $.ajax({
+	        	type: "POST",
+	        	url: "/product/status-remove-bookmark/{{$product->id}}",
+	        	success: function(data) {
+	        		window.location.reload();
+	        	}
+	        });
 		}
 	</script>
 @endsection

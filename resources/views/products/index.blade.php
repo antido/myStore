@@ -24,10 +24,10 @@
 							  	<div class="card-header bg-success text-light">
 							    	<span>{{$product->name}}</span>
 							  	</div>
-							  	@if($product->cover_image == 'noimage.jpg')
-							  		<img style="width: 50%;" src="/img/noimage.jpg" class="card-img-top" alt="Product Image">
-							  	@else
+							  	@if($product->cover_image !== 'noimage.jpg' and file_exists(public_path("/storage/cover_images/".$product->cover_image)))
 							  		<img style="width: 50%;" src="/storage/cover_images/{{$product->cover_image}}" class="card-img-top" alt="Product Image">
+							  	@else
+							  		<img style="width: 50%;" src="/img/noimage.jpg" class="card-img-top" alt="Product Image">
 							  	@endif
 							  	<div class="card-body">
 							    	<h5 class="card-title"></h5>

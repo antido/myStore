@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\UserLog');
     }
+
+    public function status()
+    {
+        return $this->hasMany('App\Status');
+    }
 }
