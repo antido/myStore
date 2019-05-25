@@ -41,3 +41,9 @@ Route::put('/profile/image/{id}', 'ProfileController@addProfileImage');
 /* Purchase Product Route */
 Route::post('/purchase/{id}/{amount}', 'PurchaseController@finalizeProductPurchase');
 
+/* Status Route */
+Route::post('/product/status-like/{id}', 'StatusController@likeProduct');
+Route::post('/product/status-bookmark/{id}', 'StatusController@bookmarkProduct');
+Route::post('/product/status-remove-like/{id}', 'StatusController@removeLikeProduct');
+Route::post('/product/status-remove-bookmark/{id}', 'StatusController@removeBookmarkProduct');
+

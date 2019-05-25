@@ -20,4 +20,9 @@ class Products extends Model
     {
     	return $this->hasOne('App\ProductDetail');
     }
+
+    public function status()
+    {
+        return $this->hasMany('App\Status');
+    }
 }
