@@ -10,6 +10,7 @@ use App\PurchaseRecord;
 use App\AddToCart;
 use App\ProductDetail;
 use App\UserLog;
+use App\Status;
 
 class TransactionsController extends Controller
 {
@@ -35,7 +36,8 @@ class TransactionsController extends Controller
 
     public function status()
     {
-    	return view('transactions.status');
+        $productStat = Status::all();
+    	return view('transactions.status')->with('productStat', $productStat);
     }
 
     public function log()
